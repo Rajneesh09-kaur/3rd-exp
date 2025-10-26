@@ -1,0 +1,129 @@
+import React, { useState } from 'react';
+import ReactDOM from 'react-dom/client';
+
+const App = () => {
+  const [books, setBooks] = useState([
+    { title: '1984', author: 'George Orwell' },
+    { title: 'The Great Gatsby', author: 'F. Scott Fitzgerald' },
+    { title: 'To Kill a Mockingbird', author: 'Harper Lee' },
+  ]);
+  const [searchTerm, setSearchTerm] = useState('');
+  const [newTitle, setNewTitle] = useState('');
+  const [newAuthor, setNewAuthor] = useState('');
+
+  const handleAddBook = () => {
+    if (newTitle.trim() && newAuthor.trim()) {
+      setBooks([...books, { title: newTitle, author: newAuthor }]);
+      setNewTitle('');
+      setNewAuthor('');
+    }
+  };
+
+  const handleRemoveBook = (index) => {
+    setBooks(books.filter((_, i) => i !== index));
+  };
+
+  const filteredBooks = books.filter((book) =>
+    `${book.title} ${book.author}`.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
+return (
+    <div style={styles.container}>
+      <h2 style={styles.heading}>Library Management</h2>
+
+      <input
+        type="text"
+        placeholder="Search by title or author"
+        value={searchTerm}
+        onChange={(e) => setSearchTerm(e.target.value)}
+        style={styles.searchInput}
+      />
+
+      <div style={styles.form}>
+        <input
+          type="text"
+          placeholder="Book Title"
+          value={newTitle}
+          onChange={(e) => setNewTitle(e.target.value)}
+          style={styles.input}
+        />
+        <input
+          type="text"
+          placeholder="Author"
+          value={newAuthor}
+          onChange={(e) => setNewAuthor(e.target.value)}
+          style={styles.input}
+        />
+        <button onClick={handleAddBook} style={styles.addButton}>Add Book</button>
+      </div>
+      <ul style={styles.bookList}>
+        {filteredBooks.map((book, index) => (
+          <li key={index} style={styles.bookItem}>
+            <span>{book.title} by {book.author}</span>
+            <button onClick={() => handleRemoveBook(index)} style={styles.removeButton}>Remove</button>
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+};
+
+const styles = {
+  container: {
+    maxWidth: '500px',
+    margin: '40px auto',
+    fontFamily: 'Arial, sans-serif',
+    padding: '20px',
+    border: '1px solid #ddd',
+    borderRadius: '8px',
+    boxShadow: '0 0 10px rgba(0,0,0,0.1)'
+  },
+  heading: {
+    textAlign: 'center',
+    marginBottom: '20px'
+  },
+  searchInput: {
+    width: '100%',
+    padding: '8px',
+    marginBottom: '16px',
+    fontSize: '16px'
+  },
+  form: {
+    display: 'flex',
+    gap: '8px',
+    marginBottom: '16px'
+  },
+  input: {
+    flex: 1,
+    padding: '8px',
+    fontSize: '14px'
+  },
+  addButton: {
+    padding: '8px 12px',
+    fontSize: '14px',
+    backgroundColor: '#3498db',
+    color: '#fff',
+    border: 'none',
+    cursor: 'pointer'
+  },
+  bookList: {
+    listStyle: 'none',
+    padding: 0
+  },
+  bookItem: {
+    display: 'flex',
+    justifyContent: 'space-between',
+    padding: '6px 0',
+    borderBottom: '1px solid #ccc'
+  },
+  removeButton: {
+    backgroundColor: '#e74c3c',
+    color: '#fff',
+    border: 'none',
+    padding: '4px 8px',
+    cursor: 'pointer'
+  }
+};
+
+const root = ReactDOM.createRoot(document.getElementById('root'));
+root.render(<App />);
