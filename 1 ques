@@ -1,0 +1,47 @@
+import React from 'react';
+import ReactDOM from 'react-dom/client';
+import './styles.css'; // Optional: create this file for styling
+
+const ProductCard = ({ name, price, status }) => {
+  return (
+    <div className="product-card">
+      <h3>{name}</h3>
+      <p>Price: ${price}</p>
+      <p>
+        Status:{' '}
+        <span className={status === 'In Stock' ? 'in-stock' : 'out-of-stock'}>
+          {status}
+        </span>
+      </p>
+    </div>
+  );
+};
+
+const App = () => {
+  const products = [
+    { name: 'Wireless Mouse', price: 25.99, status: 'In Stock' },
+    { name: 'Keyboard', price: 45.5, status: 'Out of Stock' },
+    { name: 'Monitor', price: 199.99, status: 'In Stock' },
+  ];
+ return (
+    <div className="product-list">
+      <h2>Products List</h2>
+      <div className="product-container">
+        {products.map((product, index) => (
+          <ProductCard
+            key={index}
+            name={product.name}
+            price={product.price}
+            status={product.status}
+          />
+        ))}
+      </div>
+    </div>
+  );
+};
+
+const root = ReactDOM.createRoot(document.getElementById('root'));
+root.render(<App />);
+
+
+createRoot(document.getElementById('root')).render(<App />);
